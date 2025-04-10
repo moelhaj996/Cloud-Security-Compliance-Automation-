@@ -1,0 +1,96 @@
+# Cloud Provider Configuration
+aws:
+  region: us-east-1
+  credentials:
+    profile: default
+    # Or use these if not using AWS credentials file
+    # access_key_id: YOUR_ACCESS_KEY
+    # secret_access_key: YOUR_SECRET_KEY
+
+azure:
+  subscription_id: YOUR_SUBSCRIPTION_ID
+  tenant_id: YOUR_TENANT_ID
+  client_id: YOUR_CLIENT_ID
+  client_secret: YOUR_CLIENT_SECRET
+
+gcp:
+  project_id: YOUR_PROJECT_ID
+  credentials_file: path/to/credentials.json
+
+# Alert Configuration
+alerts:
+  alert_levels:
+    - HIGH
+    - MEDIUM
+  
+  # Email alerts
+  email:
+    enabled: true
+    smtp_server: smtp.gmail.com
+    port: 587
+    username: your-email@gmail.com
+    password: your-app-specific-password
+    from: your-email@gmail.com
+    to: 
+      - admin@company.com
+      - security@company.com
+
+  # Slack alerts
+  slack:
+    enabled: true
+    webhook_url: https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+    channel: "#security-alerts"
+
+  # Jira integration
+  jira:
+    enabled: true
+    url: https://your-company.atlassian.net
+    project_key: SEC
+    username: your-jira-email@company.com
+    token: your-jira-api-token
+
+  # Prometheus metrics
+  prometheus:
+    enabled: true
+    port: 9090
+
+# Compliance Framework Settings
+compliance:
+  frameworks:
+    CIS:
+      version: 1.4.0
+      enabled: true
+      minimum_score: 90
+    
+    HIPAA:
+      enabled: true
+      required_controls:
+        - access_control
+        - encryption
+    
+    PCI:
+      enabled: true
+      version: 3.2.1
+      required_controls:
+        - req_3
+        - req_7
+    
+    SOC2:
+      enabled: true
+      required_controls:
+        - CC6.1
+        - CC6.7
+
+# Scanning Configuration
+scanning:
+  interval: 3600  # Scan every hour
+  parallel: true
+  timeout: 300  # 5 minutes timeout per scan
+  retries: 3
+
+# Reporting Configuration
+reporting:
+  format: json
+  output_dir: /var/log/compliance-reports
+  retention_days: 90
+  include_evidence: true 

@@ -1,0 +1,85 @@
+# Alert System Configuration
+
+# Global settings
+alert_system:
+  log_level: INFO
+  timezone: UTC
+
+# Notification channels configuration
+channels:
+  # Email channel configuration
+  - type: email
+    enabled: true
+    smtp_host: smtp.gmail.com
+    smtp_port: 587
+    smtp_username: ${SMTP_USERNAME}  # Set in environment variable
+    smtp_password: ${SMTP_PASSWORD}  # Set in environment variable
+    from_address: security-alerts@yourdomain.com
+    recipients:
+      - security-team@yourdomain.com
+      - devops-team@yourdomain.com
+    use_tls: true
+
+  # Slack channel configuration
+  - type: slack
+    enabled: true
+    webhook_url: ${SLACK_WEBHOOK_URL}  # Set in environment variable
+    channel: "#security-alerts"
+    username: "Security Alert Bot"
+    icon_emoji: ":warning:"
+
+# Alert severity thresholds
+severity_thresholds:
+  critical:
+    min_score: 9.0
+    notify_channels:
+      - email
+      - slack
+    immediate_notification: true
+
+  high:
+    min_score: 7.0
+    notify_channels:
+      - email
+      - slack
+    immediate_notification: true
+
+  medium:
+    min_score: 4.0
+    notify_channels:
+      - slack
+    immediate_notification: false
+
+  low:
+    min_score: 0.0
+    notify_channels:
+      - slack
+    immediate_notification: false
+
+# Alert aggregation settings
+aggregation:
+  enabled: true
+  window_minutes: 60
+  max_alerts_per_window: 10
+  group_by:
+    - source
+    - severity
+
+# Rate limiting settings
+rate_limiting:
+  enabled: true
+  max_alerts_per_minute: 5
+  max_alerts_per_hour: 50
+  cooldown_minutes: 15
+
+# Notification templates
+templates:
+  email:
+    subject_template: "[{severity}] {title}"
+    include_findings: true
+    max_findings: 10
+    
+  slack:
+    include_findings: true
+    max_findings: 5
+    collapse_findings: true 
